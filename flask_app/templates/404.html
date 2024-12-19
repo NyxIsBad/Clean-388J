@@ -1,0 +1,22 @@
+{% extends "header.html" %}
+
+{% block content %}
+<div class="w-1/2 mx-auto mt-5 p-10 border rounded-lg bg-base-300 relative">
+    <div class="text-center">
+        <h1 class="text-6xl font-bold text-red-600 mb-4">404</h1>
+        <h2 class="text-4xl font-semibold text-red-500 mb-6">Page not found</h2>
+        
+        <div role="alert" class="alert alert-error base-content mb-6">
+            {% if error %}
+            <span>{{ error }}</span>
+            {% endif %}
+        </div>
+    </div>
+
+    <a href="{{ url_for('recipes.index') }}">
+        <button class="btn btn-primary absolute bottom-2 right-2">
+            Home
+        </button>
+    </a>
+</div>
+{% endblock %}

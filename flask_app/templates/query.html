@@ -1,0 +1,30 @@
+{% extends "header.html" %} 
+{% block content %}
+<div class="max-w-4xl mx-auto mt-10 p-6 bg-white shadow rounded-lg space-y-6">
+
+    <h2 class="text-3xl font-bold text-gray-800 text-center">Search Results for "{{ query }}"</h2>
+
+    {% if results %}
+    <ul class="space-y-4">
+        {% for recipe in results %}
+        <a href="{{ url_for('recipes.recipe', recipe_id=recipe.recipe_id) }}">
+          <li class="p-4 bg-gray-100 rounded-lg shadow hover:shadow-lg transition-shadow">
+              <h3 class="text-xl font-semibold text-gray-800">{{ recipe.title }}</h3>
+              <p class="text-gray-700">{{ recipe.description }}</p>
+              <p class="text-sm text-gray-600"><strong>Date Posted:</strong> {{ recipe.date_posted.strftime('%Y-%m-%d') }}</p>
+          </li>
+        </a>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p class="text-center text-gray-600">No recipes found matching "{{ query }}".</p>
+    {% endif %}
+
+    <div class="text-center">
+        <a href="{{ url_for('recipes.index') }}" class="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors">
+            Back to Search
+        </a>
+    </div>
+
+</div>
+{% endblock %}

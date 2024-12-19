@@ -1,0 +1,46 @@
+{% extends "header.html" %}
+
+{% block content %}
+
+<div class="main-container mx-auto p-8 max-w-4xl">
+  <h2 class="text-2xl font-bold mb-6 text-center">Recipes made by {{ user.username }}</h2>
+
+  {% for recipe in recipes %}
+    <div class="mb-12 p-6 border-b border-gray-300">
+      <!-- Title -->
+      <div class="mb-4">
+        <h1 class="text-xl font-semibold">
+          <a href="{{ url_for('recipes.recipe', recipe_id=recipe.recipe_id) }}">{{ recipe.title }}</a>
+        </h1>
+      </div>
+
+      <!-- Description -->
+      <div class="mb-4">
+        <p class="text-gray-700"><strong>Description:</strong></p>
+        {{ recipe.description }}
+      </div>
+
+      <!-- Date Posted -->
+      <div class="mb-4">
+        <p class="text-gray-500"><strong>Date Posted:</strong> {{ recipe.date_posted.strftime('%Y-%m-%d') }}</p>
+      </div>
+
+      <!-- Author -->
+      <div class="mb-4">
+        <p class="text-gray-700"><strong>Author:</strong> {{ recipe.author.username }}</p>
+      </div>
+      <!-- if we are the user, then we should add deletes -->
+      {% if current_user == recipe.author %}
+        <form action="{{ url_for('recipes.delete_recipe', recipe_id=recipe.recipe_id) }}" method="POST">
+          {{ form.csrf_token }}
+          <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700">
+            Delete Recipe
+          </button>
+        </form>
+      {% endif %}
+    </div>
+  {% else %}
+    <p class="text-center text-gray-500">No recipes found.</p>
+  {% endfor %}
+</div>
+{% endblock %}

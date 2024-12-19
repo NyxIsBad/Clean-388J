@@ -1,0 +1,53 @@
+{% extends "header.html" %} 
+{% block content %}
+<div class="max-w-4xl mx-auto mt-10 p-6 bg-white shadow rounded-lg space-y-6">
+
+    {# Title Section #}
+    <div class="text-center">
+        <h1 class="text-3xl font-bold text-gray-800">{{ recipe.title }}</h1>
+    </div>
+
+    {# Image Section #}
+    <div class="flex justify-center">
+        <img src="data:image/png;base64,{{ get_b64_img(recipe.image) }}" alt="{{ recipe.title }}" 
+             class="rounded-lg max-h-96 object-contain">
+    </div>
+
+    {# Date and Author Section #}
+    <div class="flex justify-between text-gray-600 text-sm">
+        <p>Date Posted: {{ recipe.date_posted.strftime('%Y-%m-%d') }}</p>
+        <p>Author: {{ recipe.author.username }}</p>
+    </div>
+
+    {# Description Section #}
+    <div>
+        <h2 class="text-xl font-semibold text-gray-700">Description:</h2>
+        <p class="text-gray-800">{{ recipe.description }}</p>
+    </div>
+
+    {# Ingredients Section #}
+    <div>
+        <h2 class="text-xl font-semibold text-gray-700">Ingredients:</h2>
+        <p class="text-gray-800">{{ recipe.ingredients }}</p>
+    </div>
+
+    {# Instructions Section #}
+    <div>
+        <h2 class="text-xl font-semibold text-gray-700">Instructions:</h2>
+        <p class="text-gray-800">{{ recipe.instructions }}</p>
+    </div>
+
+    {# Delete Recipe Button (if the user is the author) #}
+    {% if current_user == recipe.author %}
+    <div class="flex justify-end">
+        <form action="{{ url_for('recipes.delete_recipe', recipe_id=recipe.recipe_id) }}" method="POST">
+            {{ form.csrf_token }}
+            <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700">
+                Delete Recipe
+            </button>
+        </form>
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}

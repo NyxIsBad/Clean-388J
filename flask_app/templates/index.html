@@ -1,0 +1,50 @@
+{% extends "header.html" %} {% block content %}
+<div class="main-container w-[90%] mx-auto mt-5 p-10 border rounded-lg bg-base-300 relative">
+  <div class="search-container flex justify-center items-center">
+    <form class="searchbar input input-bordered flex items-center gap-2 w-1/2" action="/" method="POST">
+      {{ form.csrf_token }}
+      {{ form.search_query(class="form-control grow w-full", placeholder="Search for recipes...") }}
+    
+      <button type="submit" class="flex items-center">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 16 16"
+          fill="currentColor"
+          class="h-5 w-5 text-gray-500">
+          <path
+            fill-rule="evenodd"
+            d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
+            clip-rule="evenodd" />
+        </svg>
+      </button>
+      {% if form.search_query.errors %}
+        <div class="error" role="alert">
+          {% for error in form.search_query.errors %}
+            <span>{{ error }}</span>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </form>
+  </div>
+  {# for recipes in recipes, we display a card with their attributes #}
+  {% if recipes %}
+  <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+  {% for recipe in recipes %}
+    <div class="card bg-base-200 w-full h-50 shadow-xl">
+      <figure>
+        <img src="data:image/png;base64,{{ get_b64_img(recipe.image) }}" alt="{{ recipe.title }}" class="rounded-t-lg">
+      </figure>
+      <div class="card-body">
+        <h2 class="card-title">{{ recipe.title }}</h2>
+        <p>{{ recipe.description }}</p>
+        <div class="card-actions justify-end">
+          <a href="{{ url_for('recipes.recipe', recipe_id=recipe.recipe_id) }}">
+            <button class="btn btn-primary">See Recipe</button>
+          </a>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+  {% endif %}
+</div>
+{% endblock %}
